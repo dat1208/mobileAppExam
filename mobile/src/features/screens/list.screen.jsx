@@ -1,40 +1,77 @@
-import React from 'react';
-import { Button, Divider ,Icon, Layout, TopNavigation, TopNavigationAction,  Avatar, ListItem } from '@ui-kitten/components';
+import React, { useEffect, useState } from 'react';
+import { Button, Divider, Icon, Layout, TopNavigation, TopNavigationAction, ListItem, List, Text } from '@ui-kitten/components';
 import { SafeAreaView, View } from 'react-native';
-import { ImageProps, StyleSheet } from 'react-native';
-
-interface IListItem {
-    title: string;
-    description: string;
-  }
+import axios from 'axios';
+import {BASE_API_URL} from "@env";
 
 const BackIcon = (props) => (
-    <Icon {...props} name='arrow-back' />
+  <Icon {...props} name='arrow-back' />
+);
+
+export const ListScreen = ({ navigation }) => {
+  const navigateBack = () => {
+    navigation.goBack();
+  };
+  const BackAction = () => (
+    <TopNavigationAction icon={BackIcon} onPress={navigateBack} />
   );
 
-export const ListScreen = ( {navigation}) => {
+  const renderItemAccessory = () => (
+    <Button size='tiny'>
+      FOLLOW
+    </Button>
+  );
+  const renderItemIcon = (props) => (
+    <Icon
+      {...props}
+      name='person'
+    />
+  );
 
-    const navigateBack = () => {
-        navigation.goBack();
-      };
+  const [users, setUsers] = useState([
+    { id: 1, username: 'John Doe', email: 'john.doe@example.com' },
+    { id: 2, username: 'Jane Doe', email: 'jane.doe@example.com' },
+  ]);
 
-      
-    const BackAction = () => (
-        <TopNavigationAction icon={BackIcon} onPress={navigateBack}/>
-      );
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`${BASE_API_URL}/users`);
+      setUsers(response.data)      
+      } catch (error) {
+        console.error('Error fetching users:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const renderItem = ({ item, index }) => (
+    <ListItem
+      title={`${item.username}`}
+      description={`${item.email}`}
+      accessoryLeft={renderItemIcon}
+      accessoryRight={renderItemAccessory}
+    />
+  );
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-    <TopNavigation title='List Exam Mobile' alignment='center' accessoryLeft={BackAction}/>
-    <Divider/>
-    <Layout style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <View style={{backgroundColor: '#f6f9fe', width:'80%', height:'60%', borderRadius:10, justifyContent: 'center', alignItems: 'center', padding:15}}>
-      <Button>List Button</Button>
-      
-      </View>
-     
-    </Layout>
-  </SafeAreaView>
+      <TopNavigation title='List Exam Mobile' alignment='center' accessoryLeft={BackAction} />
+      <Divider />
+      <Layout style={{flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <View style={{  width: '100%', height: '100%', borderRadius: 10, justifyContent: 'center', alignItems: 'center', padding: 15 }}>
+          {users.length > 0 ? (
+            <List
+              style={{ width: '100%' }}
+              data={users}
+              renderItem={renderItem}
+            />
+          ) : (
+            <Text>No users found</Text>
+          )}
+        </View>
+      </Layout>
+    </SafeAreaView>
   );
 };
-

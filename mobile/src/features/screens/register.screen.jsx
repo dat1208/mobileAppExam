@@ -10,7 +10,7 @@ const BackIcon = (props) => (
 
 export const RegisterScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(false); 
-  const [users, setUsers] = useState({ username: '', email: '' });
+  const [users, setUsers] = useState({ name: '', url: '' ,groupname:''});
 
 
   const navigateBack = () => {
@@ -22,23 +22,30 @@ export const RegisterScreen = ({ navigation }) => {
   );
 
 
-  const handleUsernameChange = (text) => {
-    setUsers({ ...users, username: text });
+  const handleNameChange = (text) => {
+    setUsers({ ...users, name: text });
   };
 
-  const handleEmailChange = (text) => {
-    setUsers({ ...users, email: text });
+  const handleUrlChange = (text) => {
+    setUsers({ ...users, url: text });
+  };
+  const handleGroupnameChange = (text) => {
+    setUsers({ ...users, groupname: text });
   };
 
   const handleSubmit = async () => {
     try {
         setLoading(true);
         const response = await axios.post(`${BASE_API_URL}/users`, {
-        username: users.username,
-        email: users.email,
+        name: users.name,
+        url: users.url,
+        groupName: users.groupname
       });
 
       console.log('Registration successful:', response.data);
+   //   navigation.navigate('ListScreen', { shouldLoadList: true});
+      navigateBack();
+
     } catch (error) {
       console.error('Registration failed:', error.message);
     } finally {
@@ -56,17 +63,24 @@ export const RegisterScreen = ({ navigation }) => {
           <Text category="h4">Register</Text>
           <Text style={{ marginBottom: 10 }}>Điền thông tin cơ bản</Text>
           <Input
-            label='Username'
-            placeholder="Please type your username"
-            value={users.username}
-            onChangeText={handleUsernameChange}
+            label='Name'
+            placeholder="Please type your name"
+            value={users.name}
+            onChangeText={handleNameChange}
             style={{ marginBottom: 10 }}
           />
           <Input
-            label='Email'
-            placeholder="Please type your Email"
-            value={users.email}
-            onChangeText={handleEmailChange}
+            label='Url'
+            placeholder="Please type your Url"
+            value={users.url}
+            onChangeText={handleUrlChange}
+            style={{ marginBottom: 10 }}
+          />
+          <Input
+            label='Groupname'
+            placeholder="Please type your GroupName"
+            value={users.groupname}
+            onChangeText={handleGroupnameChange}
             style={{ marginBottom: 10 }}
           />
 

@@ -19,10 +19,13 @@ import { LoggerMiddleware } from './core/logs.middleware';
       synchronize: true,
       entities: [User],
     }),
+
     // Có bao nhiêu entity thêm vô 2 chổ này
     TypeOrmModule.forFeature([User]),
   ],
+
   controllers: [AppController, UserController],
+  
   providers: [AppService, UserService, ],
 })
 export class AppModule implements NestModule {

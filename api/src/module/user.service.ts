@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindOneOptions, Repository } from 'typeorm';
+import { FindOneOptions, Like, Repository } from 'typeorm';
 import { User } from '../entities/user.enity';
 import { CreateUserDto } from './user.dto';
 
@@ -11,13 +11,17 @@ export class UserService {
     private readonly userRepository: Repository<User>,
   ) { }
 
-  async findAll(): Promise<User[]> {
-    return await this.userRepository.find();
+  async findAll(group: string): Promise<User[]> {
+    const options: FindOneOptions<User> = {
+      where: {
+        groupName: Like(`%${group}%`),
+      },
+    };
+    return await this.userRepository.find(options);
   }
 
   async findById(id: number): Promise<User> {
     const options: FindOneOptions<User> = {
-      select: ['id', 'email', 'username',],
       where: {
         id: id,
       },

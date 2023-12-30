@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put, Delete, Param, Body, NotFoundException } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Param, Body, NotFoundException, Query } from '@nestjs/common';
 import { ApiTags, ApiResponse } from '@nestjs/swagger';
 import { User } from 'src/entities/user.enity';
 import { CreateUserDto, UpdateUserDto } from './user.dto';
@@ -7,12 +7,11 @@ import { UserService } from './user.service';
 @ApiTags('users')
 @Controller('users')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
-
+  constructor(private readonly userService: UserService) { }
   @Get()
   @ApiResponse({ status: 200, description: 'List of users', type: User, isArray: true })
-  async findAll(): Promise<User[]> {
-    return this.userService.findAll();
+  async findAll(@Query('group') group: string): Promise<User[]> {
+    return this.userService.findAll(group);
   }
 
   @Get(':id')

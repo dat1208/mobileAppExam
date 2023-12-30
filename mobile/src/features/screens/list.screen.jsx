@@ -36,6 +36,7 @@ export const ListScreen = ({ navigation }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        axios.defaults.timeout = 30000;
         const response = await axios.get(`${BASE_API_URL}/users`);
       setUsers(response.data)      
       } catch (error) {

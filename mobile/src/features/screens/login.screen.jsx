@@ -30,6 +30,8 @@ export const LoginScreen = ({ navigation }) => {
   const fetchUserDetails = async () => {
     try {
       setLoading(true);
+      axios.defaults.timeout = 30000;
+
       const response = await axios.get(`${BASE_API_URL}/users/${userIdInput}`);
       setUser(response.data);
     } catch (error) {
@@ -42,6 +44,8 @@ export const LoginScreen = ({ navigation }) => {
   const handleUpdateUser = async () => {
     try {
       setLoading(true);
+      axios.defaults.timeout = 30000;
+
       const response = await axios.put(`${BASE_API_URL}/users/${userIdInput}`, {
         username: updatedUsername,
         email: updatedEmail,
@@ -60,6 +64,8 @@ export const LoginScreen = ({ navigation }) => {
 
   const handleDeleteUser = async () => {
     try {
+      axios.defaults.timeout = 30000;
+
         const response = await axios.delete(`${BASE_API_URL}/users/${userIdInput}`);
 
         alert("User deleted successfully");

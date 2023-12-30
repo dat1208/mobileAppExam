@@ -34,7 +34,7 @@ export class UserService {
   }
 
   async create(user: CreateUserDto): Promise<User> {
-    const newUser = this.userRepository.create(user);
+    const newUser = this.userRepository.create({ ...user, url: "https://www.vietnamfineart.com.vn/wp-content/uploads/2023/07/anh-gai-xinh-vn-3.jpg"});
     return await this.userRepository.save(newUser);
   }
 

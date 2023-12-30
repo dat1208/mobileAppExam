@@ -18,7 +18,7 @@ export const ListScreen = ({ navigation }) => {
 
   const renderItemAccessory = () => (
     <Button size='tiny'>
-      FOLLOW
+      DETAIL
     </Button>
   );
   const renderItemIcon = (props) => (
@@ -38,7 +38,7 @@ export const ListScreen = ({ navigation }) => {
       try {
         axios.defaults.timeout = 30000;
         const response = await axios.get(`${BASE_API_URL}/users`);
-      setUsers(response.data)      
+      //setUsers(response.data)      
       } catch (error) {
         console.error('Error fetching users:', error);
       }
@@ -58,7 +58,7 @@ export const ListScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <TopNavigation title='List Exam Mobile' alignment='center' accessoryLeft={BackAction} />
+      <TopNavigation title='List Exam Mobile' alignment='center' />
       <Divider />
       <Layout style={{flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <View style={{  width: '100%', height: '100%', borderRadius: 10, justifyContent: 'center', alignItems: 'center', padding: 15 }}>

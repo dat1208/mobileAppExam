@@ -11,7 +11,10 @@ export class UserController {
   @Get()
   @ApiResponse({ status: 200, description: 'List of users', type: User, isArray: true })
   async findAll(@Query('group') group: string): Promise<User[]> {
-    return this.userService.findAll(group);
+    if(group && group.length !== 0) {
+      return this.userService.findAllByGroup(group);
+    }
+    return this.userService.findAll();
   }
 
   @Get(':id')

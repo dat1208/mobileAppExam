@@ -11,13 +11,17 @@ export class UserService {
     private readonly userRepository: Repository<User>,
   ) { }
 
-  async findAll(group: string): Promise<User[]> {
+  async findAllByGroup(group: string): Promise<User[]> {
     const options: FindOneOptions<User> = {
       where: {
         groupName: Like(`%${group}%`),
       },
     };
     return await this.userRepository.find(options);
+  }
+
+  async findAll(): Promise<User[]> {
+    return await this.userRepository.find();
   }
 
   async findById(id: number): Promise<User> {
